@@ -1,0 +1,28 @@
+<div id="tcomment"></div>
+<script>
+    // 引入 twikoo
+    import twikoo from "twikoo";
+    // 引入 twikoo 的样式
+    import "twikoo/dist/twikoo.css";
+    function initTwikoo() {
+        // 初始化twikoo
+        twikoo({
+            envId: "https://linglilongyi.com/comments",
+            el: "#tcomment",
+            lang: "zh-CN",
+        }).then(() => {
+            // 这里主要用来调试
+            console.log("comment loading success");
+        });
+    }
+
+    // 这里两个事件绑定很重要，有时候就是路由的时候无法加载twikoo
+    document.addEventListener("astro:after-swap", () => initTwikoo(), {
+        once: false,
+    });
+    document.addEventListener("astro:page-load", () => initTwikoo(), {
+        once: false,
+    });
+
+    initTwikoo();
+</script>

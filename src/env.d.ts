@@ -1,0 +1,1 @@
+/// <reference types="../.astro/.d.ts" />
