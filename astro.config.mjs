@@ -1,55 +1,134 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
-import charm from "astro-charm";
+import sitemap from "@astrojs/sitemap";
+import svelte from "@astrojs/svelte";
+import tailwind from "@astrojs/tailwind";
+import mdx from "@astrojs/mdx";
+import swup from "@swup/astro";
+import Compress from "astro-compress";
+import icon from "astro-icon";
+import { defineConfig } from "astro/config";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeComponents from "rehype-components"; /* Render the custom directive content */
+import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
+import remarkDirective from "remark-directive"; /* Handle directives */
+import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
+import remarkMath from "remark-math";
+import remarkSectionize from "remark-sectionize";
+import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
+import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
+import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
+import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
+import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.linglilongyi.com',
-	integrations: [charm({
-  config: {
-    "lang": "zh-CN",
-    "title": "雨霖铃慢",
-    "description": "关于爱与美食的博客",
-    "author": "绫里龙一",
-    "licenseId": "CC0-1.0",
-    //其实没有在用，只是要有值才能调用自定义的评论组件
-    "giscus": {
-      repo: "Yuhanawa/astro-charm",
-      repoId: "R_kgDOMk98JQ",
-      category: "Blog Post Comments",
-      categoryId: "DIC_kwDOMk98Jc4CljB_",
-    },
-    "side": {
-      "title": "雨霖铃慢",
-      "sub": "仙人掌de兔子洞",
-      "bio": "哀吾生之须臾，羡长江之无穷；挟飞仙以遨游，抱明月而长终；知不可乎骤得，托遗响于悲风",
-      "navHome": {
-        "title": "Home",
-        "icon": {
-          default: "icon-park:carrot",
-          hover: "icon-park-outline:carrot",
-          active: "icon-park-outline:cactus",
-        }
-      },
-      "footer": [
+  site: "https://linglilongyi.com",
+  base: "/",
+  trailingSlash: "ignore",
+  integrations: [
+    mdx(),
+    tailwind(
         {
-          "title": "GitHub",
-          "link": "https://github.com/linglilongyi",
-          "icon": "simple-icons:github"
+          nesting: true,
         }
+    ),
+    swup({
+      theme: false,
+      animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector
+      // the default value `transition-` cause transition delay
+      // when the Tailwind class `transition-all` is used
+      containers: ["main", "#toc"],
+      smoothScrolling: true,
+      cache: true,
+      preload: true,
+      accessibility: true,
+      updateHead: true,
+      updateBodyClass: false,
+      globalInstance: true,
+    }),
+    icon({
+      include: {
+        "preprocess: vitePreprocess(),": ["*"],
+        "fa6-brands": ["*"],
+        "fa6-regular": ["*"],
+        "fa6-solid": ["*"],
+      },
+    }),
+    svelte(),
+    sitemap(),
+    Compress({
+      CSS: false,
+      Image: false,
+      Action: {
+        Passed: async () => true, // https://github.com/PlayForm/Compress/issues/376
+      },
+    }),
+  ],
+  markdown: {
+    remarkPlugins: [
+      remarkMath,
+      remarkReadingTime,
+      remarkExcerpt,
+      remarkGithubAdmonitionsToDirectives,
+      remarkDirective,
+      remarkSectionize,
+      parseDirectiveNode,
+    ],
+    rehypePlugins: [
+      rehypeKatex,
+      rehypeSlug,
+      [
+        rehypeComponents,
+        {
+          components: {
+            github: GithubCardComponent,
+            note: (x, y) => AdmonitionComponent(x, y, "note"),
+            tip: (x, y) => AdmonitionComponent(x, y, "tip"),
+            important: (x, y) => AdmonitionComponent(x, y, "important"),
+            caution: (x, y) => AdmonitionComponent(x, y, "caution"),
+            warning: (x, y) => AdmonitionComponent(x, y, "warning"),
+          },
+        },
       ],
-    },
-    "markdown": {
-      "colorizedBrackets": {
-        explicitTrigger: true
-      }
-    }
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "append",
+          properties: {
+            className: ["anchor"],
+          },
+          content: {
+            type: "element",
+            tagName: "span",
+            properties: {
+              className: ["anchor-icon"],
+              "data-pagefind-ignore": true,
+            },
+            children: [
+              {
+                type: "text",
+                value: "#",
+              },
+            ],
+          },
+        },
+      ],
+    ],
   },
-  overrides: {
-    components: {
-      Comments: "./src/components/Comments.astro",
-    }
-  }
-})
-],
+  vite: {
+    build: {
+      rollupOptions: {
+        onwarn(warning, warn) {
+          // temporarily suppress this warning
+          if (
+            warning.message.includes("is dynamically imported by") &&
+            warning.message.includes("but also statically imported by")
+          ) {
+            return;
+          }
+          warn(warning);
+        },
+      },
+    },
+  },
 });
