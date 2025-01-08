@@ -26,3 +26,13 @@
       }
     }
   }
+
+.tk-content img, .tk-preview-container img {
+    display: inline;
+    vertical-align: bottom !important;
+  }
+
+.OwO .OwO-body {
+  background-color: var(–bgc)!important;
+  color: var(–hc)!important;
+  }
