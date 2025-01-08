@@ -9,10 +9,10 @@ You need to edit  `astro.config.ts`, `public/favicon.svg` for your own site.
 
 There are some changes besides the default setting of astro-charm. I replace the giscus comment with twikoo. You can write your own `Comment.astro` component. I also give a css which add a cactus in the webside background.
 
-You should add `content/posts` and `content/specials` under `src` to save your own markdown file.
+You should replace `content/posts` and `content/specials` under `src` to save your own markdown file.
 
 ```sh
-pnpm install
-pnpm astro build
+bun install
+bun astro build
 ```
 
