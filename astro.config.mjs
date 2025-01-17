@@ -9,7 +9,7 @@ export default defineConfig({
   config: {
     "lang": "zh-CN",
     "title": "雨霖铃慢",
-    "description": "今日你饮咗未啊？",
+    "description": "过得到自己过得到人",
     "author": "绫里龙一",
     "licenseId": "CC0-1.0",
     //其实没有在用，只是要有值才能调用自定义的评论组件
