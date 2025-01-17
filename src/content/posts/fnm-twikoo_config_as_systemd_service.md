@@ -3,10 +3,10 @@ title: fnm-twikoo手搓service实战
 description: 我的第一次手搓systemd service，记录fnm-twikoo的配置过程。
 published: 2025-01-07
 createTime: 2025-01-07
-updated: 
-category: know-why
+updated: 2025-01-12
+category: 技术
 tags:
-  - 后端
+  - 运维
 image: https://images.unsplash.com/photo-1452802447250-470a88ac82bc
 draft: false
 hidden: false
