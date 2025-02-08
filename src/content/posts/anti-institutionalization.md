@@ -6,7 +6,6 @@ createTime: 2025-01-20
 category: 书影音游
 tags:
   - 影评
-cover: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Mansfield_OH_-_Reformatory_-_Closed.jpg/1920px-Mansfield_OH_-_Reformatory_-_Closed.jpg
 draft: false
 hidden: false
 ---

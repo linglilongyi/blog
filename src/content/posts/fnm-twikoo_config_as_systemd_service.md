@@ -4,7 +4,7 @@ description: 我的第一次手搓systemd service，记录fnm-twikoo的配置过
 publishDate: 2025-01-07
 createTime: 2025-01-07
 updatedDate: 2025-01-12
-category: 技术
+category: 一技之长
 tags:
   - 运维
 cover: https://images.unsplash.com/photo-1452802447250-470a88ac82bc
@@ -55,8 +55,8 @@ Enviorment=TWIKOO_PORT=12345
 Enviorment=MONGDB_URL='mongdb://example.com' 
 ExecStart=tkserver 
 ```
->[!WARNING]
-> Failed at step EXEC spawning tkserver: No such file or directory
+> [!WARNING]
+Failed at step EXEC spawning tkserver: No such file or directory
 
 欧，我们用bun安装的tkserver放在了`~/.bun/bin`，在开机时这个并不在PATH中，所以我们要改成绝对路径
 ```txt
