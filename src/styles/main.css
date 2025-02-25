@@ -1,5 +1,10 @@
 @tailwind components;
-
+@font-face {
+    font-family: LXGW WenKai Screen;
+    src:  local(LXGW WenKai Screen),
+          url(/src/assets/fonts/lxgw-wenkai-gb-screen-v1.245-subset-standard.woff2) format(woff2);
+  }
+  
 @layer components {
     .card-base {
         @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition;

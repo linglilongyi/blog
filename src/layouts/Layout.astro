@@ -1,8 +1,4 @@
 ---
-import '@fontsource/roboto/400.css'
-import '@fontsource/roboto/500.css'
-import '@fontsource/roboto/700.css'
-
 import { profileConfig, siteConfig } from '@/config'
 import ConfigCarrier from '@components/ConfigCarrier.astro'
 import {
@@ -71,7 +67,6 @@ const bannerOffsetByPosition = {
 const bannerOffset =
   bannerOffsetByPosition[siteConfig.banner.position || 'center']
 ---
-
 <!DOCTYPE html>
 <html lang={siteLang} class="bg-[var(--page-bg)] transition text-[14px] md:text-[16px]"
 	  data-overlayscrollbars-initialize
