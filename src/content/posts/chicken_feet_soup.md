@@ -34,7 +34,7 @@ hidden: false
 
 
 ## 成品
-![chicken_feet_soup-uuid.jpg](https://image.linglilongyi.com/2025/01/chicken_feet_soup-uuid.jpg)
+![chicken_feet_soup](https://image.linglilongyi.com/2025/01/chicken_feet_soup-uuid.jpg)
 
 评价是无敌~
 

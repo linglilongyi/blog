@@ -7,7 +7,6 @@ updatedDate: 2025-01-12
 category: 一技之长
 tags:
   - 运维
-cover: https://images.unsplash.com/photo-1452802447250-470a88ac82bc
 draft: false
 hidden: false
 ---
