@@ -1,117 +1,184 @@
 ---
-import { Icon } from 'astro-icon/components'
-import DisplaySettings from './widget/DisplaySettings.svelte'
-import { LinkPreset, type NavBarLink } from '../types/config'
-import { navBarConfig, siteConfig } from '../config'
-import NavMenuPanel from './widget/NavMenuPanel.astro'
-import Search from './Search.svelte'
-import { LinkPresets } from '../constants/link-presets'
-import LightDarkSwitch from './LightDarkSwitch.svelte'
-import { url } from '../utils/url-utils'
-const className = Astro.props.class
+import { Icon } from "astro-icon/components";
+import ThemeToggle from "./widgets/ThemeToggle.astro";
+import { SITE_TITLE, SITE_MENU } from "../config";
 
-let links: NavBarLink[] = navBarConfig.links.map(
-  (item: NavBarLink | LinkPreset): NavBarLink => {
-    if (typeof item === 'number') {
-      return LinkPresets[item]
-    }
-    return item
-  },
-)
+// Get current path to determine active link
+const currentPath = Astro.url.pathname;
+
+// Type safely process SITE_MENU before rendering
+type SubMenuItem = {
+  id: string;
+  text: string;
+  href: string;
+  svg: string;
+  target?: string;
+};
+
+type MenuItem = {
+  id: string;
+  text: string;
+  href: string;
+  svg: string;
+  target?: string;
+  subItems?: SubMenuItem[];
+};
+
+// Ensure the menu is properly typed
+const typedMenu = SITE_MENU as MenuItem[];
 ---
-<div id="navbar" class="z-50 onload-animation">
-    <div class="absolute h-8 left-0 right-0 -top-8 bg-[var(--card-bg)] transition"></div> <!-- used for onload animation -->
-    <div class:list={[
-        className,
-        "card-base !overflow-visible max-w-[var(--page-width)] h-[4.5rem] !rounded-t-none mx-auto flex items-center justify-between px-4"]}>
-        <a href={url('/')} class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95">
-            <div class="flex flex-row text-[var(--primary)] items-center text-md">
-                <Icon name="material-symbols:home-outline-rounded" class="text-[1.75rem] mb-1 mr-2" />
-                {siteConfig.title}
-            </div>
-        </a>
-        <div class="hidden md:flex">
-            {links.map((l) => {
-                return <a aria-label={l.name} href={l.external ? l.url : url(l.url)} target={l.external ? "_blank" : null}
-                          class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95"
-                >
-                    <div class="flex items-center">
-                        {l.name}
-                        {l.external && <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.875rem] transition -translate-y-[1px] ml-1 text-black/[0.2] dark:text-white/[0.2]"></Icon>}
-                    </div>
-                </a>;
-            })}
-        </div>
-        <div class="flex">
-            <!--<SearchPanel client:load>-->
-            <Search client:only="svelte"></Search>
-            {!siteConfig.themeColor.fixed && (
-                    <button aria-label="Display Settings" class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90" id="display-settings-switch">
-                        <Icon name="material-symbols:palette-outline" class="text-[1.25rem]"></Icon>
-                    </button>
+
+<nav
+  class="navbar fixed px-2 w-full transform transition-transform delay-300 duration-500 ease-in-out text-center z-50 bg-base-100 shadow-lg md:hidden"
+  id="navbar"
+>
+  <div class="navbar-start">
+    <label class="btn btn-circle btn-md bg-base-100 swap swap-rotate">
+      <input type="checkbox" id="menu-toggle" />
+      <Icon name="lucide:menu" class="swap-off h-5 w-5" />
+      <Icon name="lucide:x" class="swap-on h-5 w-5" />
+    </label>
+  </div>
+
+  <div class="navbar-center">
+    <a class="btn btn-ghost text-xl hover:scale-105 transition-transform duration-300" href="/">
+      {SITE_TITLE}
+    </a>
+  </div>
+
+  <div class="navbar-end">
+    <ThemeToggle className="navbar-theme" />
+  </div>
+
+  <div
+    id="header-menu"
+    class="absolute top-full left-0 w-full transform -translate-x-full transition-transform duration-300 ease-in-out bg-base-100 shadow-lg"
+  >
+    <ul class="menu bg-transparent w-full p-2">
+      {
+        typedMenu.map((item) => (
+          <li class="w-full relative group">
+            {item.subItems ? (
+              <details open={currentPath.startsWith(item.href)}>
+                <summary class="flex items-center text-lg font-bold p-3 hover:bg-base-200 rounded-lg">
+                  <Icon name={item.svg} class="w-5 h-5 mr-2" />
+                  <span>{item.text}</span>
+                </summary>
+                <ul class="pl-4">
+                  {item.subItems.map((subItem) => (
+                    <li>
+                      <a
+                        class:list={[
+                          "flex items-center p-2 hover:bg-base-200 rounded-lg",
+                          currentPath === subItem.href && "bg-base-200",
+                        ]}
+                        href={subItem.href}
+                        target={subItem.target || "_self"}
+                      >
+                        <Icon name={subItem.svg} class="w-4 h-4 mr-2" />
+                        <span>{subItem.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ) : (
+              <a
+                class:list={[
+                  "flex items-center text-lg font-bold p-3 hover:bg-base-200 rounded-lg",
+                  currentPath === item.href && "bg-base-200",
+                ]}
+                href={item.href}
+                target={item.target || "_self"}
+              >
+                <Icon name={item.svg} class="w-5 h-5 mr-2" />
+                <span>{item.text}</span>
+              </a>
             )}
-            <LightDarkSwitch client:load></LightDarkSwitch>
-            <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden" id="nav-menu-switch">
-                <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]"></Icon>
-            </button>
-        </div>
-        <NavMenuPanel links={links}></NavMenuPanel>
-        <DisplaySettings client:only="svelte"></DisplaySettings>
-    </div>
-</div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>
 
 <script>
-function switchTheme() {
-    if (localStorage.theme === 'dark') {
-        document.documentElement.classList.remove('dark');
-        localStorage.theme = 'light';
-    } else {
-        document.documentElement.classList.add('dark');
-        localStorage.theme = 'dark';
-    }
-}
+  document.addEventListener("astro:page-load", () => {
+    let lastScrollY = window.scrollY;
+    const navbar = document.getElementById("navbar");
+    const headerMenu = document.getElementById("header-menu");
+    const menuToggle = document.getElementById("menu-toggle") as HTMLInputElement | null;
 
-function loadButtonScript() {
-    let switchBtn = document.getElementById("scheme-switch");
-    if (switchBtn) {
-        switchBtn.onclick = function () {
-            switchTheme()
-        };
+    if (!navbar || !headerMenu || !menuToggle) return;
+
+    // Toggle menu visibility
+    menuToggle.addEventListener("change", () => {
+      if (menuToggle.checked) {
+        headerMenu.classList.remove("-translate-x-full");
+        headerMenu.classList.add("translate-x-0");
+      } else {
+        headerMenu.classList.add("-translate-x-full");
+        headerMenu.classList.remove("translate-x-0");
+      }
+    });
+
+    function handleScroll() {
+      if (!navbar || !headerMenu || !menuToggle) return;
+
+      if (window.scrollY > lastScrollY && window.scrollY > 50) {
+        navbar.classList.add("-translate-y-full", "duration-500");
+        navbar.classList.remove("translate-y-0");
+
+        // Close menu when hiding navbar
+        if (menuToggle.checked) {
+          menuToggle.checked = false;
+          headerMenu.classList.add("-translate-x-full");
+          headerMenu.classList.remove("translate-x-0");
+        }
+      } else if (window.scrollY < lastScrollY) {
+        navbar.classList.remove("-translate-y-full");
+        navbar.classList.add("translate-y-0", "duration-300");
+      }
+
+      lastScrollY = window.scrollY;
     }
 
-    let settingBtn = document.getElementById("display-settings-switch");
-    if (settingBtn) {
-        settingBtn.onclick = function () {
-            let settingPanel = document.getElementById("display-setting");
-            if (settingPanel) {
-                settingPanel.classList.toggle("float-panel-closed");
-            }
-        };
-    }
+    // Throttle scroll event for better performance
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
 
-    let menuBtn = document.getElementById("nav-menu-switch");
-    if (menuBtn) {
-        menuBtn.onclick = function () {
-            let menuPanel = document.getElementById("nav-menu-panel");
-            if (menuPanel) {
-                menuPanel.classList.toggle("float-panel-closed");
-            }
-        };
-    }
-}
+    // Close menu when clicking outside
+    document.addEventListener("click", (event) => {
+      if (!navbar || !headerMenu || !menuToggle) return;
 
-loadButtonScript();
+      const target = event.target as Node;
+      if (!navbar.contains(target) && headerMenu.classList.contains("translate-x-0")) {
+        menuToggle.checked = false;
+        headerMenu.classList.add("-translate-x-full");
+        headerMenu.classList.remove("translate-x-0");
+      }
+    });
+
+    // Close menu when clicking menu items
+    const menuItems = document.querySelectorAll("#header-menu a");
+    menuItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        if (!headerMenu || !menuToggle) return;
+
+        if (menuToggle.checked) {
+          menuToggle.checked = false;
+          headerMenu.classList.add("-translate-x-full");
+          headerMenu.classList.remove("translate-x-0");
+        }
+      });
+    });
+  });
 </script>
-
-{import.meta.env.PROD && <script is:inline define:vars={{scriptUrl: url('/pagefind/pagefind.js')}}>
-async function loadPagefind() {
-    const pagefind = await import(scriptUrl)
-    await pagefind.options({
-        'excerptLength': 20
-    })
-    pagefind.init()
-    window.pagefind = pagefind
-    pagefind.search('')     // speed up the first search
-}
-loadPagefind()
-</script>}

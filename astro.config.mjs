@@ -1,138 +1,220 @@
-import sitemap from "@astrojs/sitemap";
-import svelte from "@astrojs/svelte";
-import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
-import swup from "@swup/astro";
-import Compress from "astro-compress";
+import sitemap from "@astrojs/sitemap";
+import tailwind from "@astrojs/tailwind";
+import playformCompress from "@playform/compress";
+import terser from "@rollup/plugin-terser";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeComponents from "rehype-components"; /* Render the custom directive content */
+import rehypeExternalLinks from "rehype-external-links";
 import rehypeKatex from "rehype-katex";
-import rehypeSlug from "rehype-slug";
-import rehypeFigure from "@microflash/rehype-figure";
-import remarkDirective from "remark-directive"; /* Handle directives */
-import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
 import remarkMath from "remark-math";
-import remarkSectionize from "remark-sectionize";
-import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
-import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
-import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
-import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
+
+import { CODE_THEME, USER_SITE } from "./src/config.ts";
+
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://linglilongyi.com",
-  base: "/",
-  trailingSlash: "ignore",
+  site: USER_SITE,
+  output: "static",
+  style: {
+    scss: {
+      includePaths: ["./src/styles"],
+    },
+  },
   integrations: [
     mdx(),
-    tailwind(
-        {
-          nesting: true,
-        }
-    ),
-    swup({
-      theme: false,
-      animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector
-      // the default value `transition-` cause transition delay
-      // when the Tailwind class `transition-all` is used
-      containers: ["main", "#toc"],
-      smoothScrolling: true,
-      cache: true,
-      preload: true,
-      accessibility: true,
-      updateHead: true,
-      updateBodyClass: false,
-      globalInstance: true,
+    icon(),
+    terser({
+      compress: true,
+      mangle: true,
     }),
-    icon({
-      include: {
-        "preprocess: vitePreprocess(),": ["*"],
-        "fa6-brands": ["*"],
-        "fa6-regular": ["*"],
-        "fa6-solid": ["*"],
-      },
-    }),
-    svelte(),
     sitemap(),
-    Compress({
-      CSS: false,
-      Image: false,
-      Action: {
-        Passed: async () => true, // https://github.com/PlayForm/Compress/issues/376
-      },
+    tailwind({
+      configFile: "./tailwind.config.mjs",
     }),
+    playformCompress(),
   ],
   markdown: {
-    remarkPlugins: [
-      remarkMath,
-      remarkReadingTime,
-      remarkExcerpt,
-      remarkGithubAdmonitionsToDirectives,
-      remarkDirective,
-      remarkSectionize,
-      parseDirectiveNode,
-    ],
-    rehypePlugins: [
-      rehypeKatex,
-      rehypeSlug,
-      [rehypeFigure,
-        {
-          className: "text-center",
+    shikiConfig: {
+      theme: CODE_THEME,
+      transformers: [{
+        preprocess(code, options) {
+          this.meta = { lang: options.lang || "plaintext" };
+          return code;
         },
-        ],
-      [
-        rehypeComponents,
-        {
-          components: {
-            github: GithubCardComponent,
-            note: (x, y) => AdmonitionComponent(x, y, "note"),
-            tip: (x, y) => AdmonitionComponent(x, y, "tip"),
-            important: (x, y) => AdmonitionComponent(x, y, "important"),
-            caution: (x, y) => AdmonitionComponent(x, y, "caution"),
-            warning: (x, y) => AdmonitionComponent(x, y, "warning"),
-          },
-        },
-      ],
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: "append",
-          properties: {
-            className: ["anchor"],
-          },
-          content: {
+        pre(node) {
+          const language = this.meta?.lang.toUpperCase() || "plaintext";
+
+          return {
             type: "element",
-            tagName: "span",
+            tagName: "div",
             properties: {
-              className: ["anchor-icon"],
-              "data-pagefind-ignore": true,
+              class: "not-prose frosti-code",
             },
             children: [
               {
-                type: "text",
-                value: "#",
+                type: "element",
+                tagName: "div",
+                properties: {
+                  class: "frosti-code-toolbar",
+                },
+                children: [
+                  {
+                    type: "element",
+                    tagName: "span",
+                    properties: { class: "frosti-code-toolbar-language" },
+                    children: [{ type: "text", value: language }],
+                  },
+                  {
+                    type: "element",
+                    tagName: "button",
+                    properties: {
+                      "class": "btn-copy",
+                      "aria-label": "Copy code",
+                      "type": "button",
+                    },
+                    children: [
+                      {
+                        type: "element",
+                        tagName: "span",
+                        properties: {
+                          "class": "frosti-code-toolbar-copy-icon",
+                          "aria-hidden": "true",
+                        },
+                        children: [
+                          {
+                            type: "element",
+                            tagName: "svg",
+                            properties: {
+                              "xmlns": "http://www.w3.org/2000/svg",
+                              "width": "18",
+                              "height": "18",
+                              "viewBox": "0 0 24 24",
+                              "fill": "none",
+                              "stroke": "currentColor",
+                              "stroke-width": "2",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round",
+                              "class": "copy-icon",
+                            },
+                            children: [
+                              {
+                                type: "element",
+                                tagName: "rect",
+                                properties: {
+                                  x: "9",
+                                  y: "9",
+                                  width: "13",
+                                  height: "13",
+                                  rx: "2",
+                                  ry: "2",
+                                },
+                                children: [],
+                              },
+                              {
+                                type: "element",
+                                tagName: "path",
+                                properties: {
+                                  d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1",
+                                },
+                                children: [],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        type: "element",
+                        tagName: "span",
+                        properties: {
+                          "class": "frosti-code-toolbar-copy-success hidden",
+                          "aria-hidden": "true",
+                        },
+                        children: [
+                          {
+                            type: "element",
+                            tagName: "svg",
+                            properties: {
+                              "xmlns": "http://www.w3.org/2000/svg",
+                              "width": "18",
+                              "height": "18",
+                              "viewBox": "0 0 24 24",
+                              "fill": "none",
+                              "stroke": "currentColor",
+                              "stroke-width": "2",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round",
+                              "class": "success-icon",
+                            },
+                            children: [
+                              {
+                                type: "element",
+                                tagName: "path",
+                                properties: {
+                                  d: "M20 6L9 17l-5-5",
+                                },
+                                children: [],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                ...node,
+                properties: {
+                  ...node.properties,
+                  class: "frosti-code-content",
+                },
+                children: [
+                  {
+                    type: "element",
+                    tagName: "code",
+                    properties: {
+                      class: "grid [&>.line]:px-4",
+                      style: "counter-reset: line",
+                    },
+                    children: node.children,
+                  },
+                ],
               },
             ],
-          },
+          };
         },
+        line(node) {
+          return {
+            ...node,
+            properties: {
+              ...node.properties,
+              class: "line before:content-[counter(line)]",
+              style: "counter-increment: line",
+            },
+          };
+        },
+        code(node) {
+          delete node.properties.style;
+          return node;
+        },
+      },
       ],
-    ],
+    },
+    remarkPlugins: [remarkMath, remarkReadingTime],
+    rehypePlugins: [rehypeKatex, [
+      rehypeExternalLinks,
+      {
+        content: { type: "text", value: "↗" },
+      },
+    ]],
   },
   vite: {
-    build: {
-      rollupOptions: {
-        onwarn(warning, warn) {
-          // temporarily suppress this warning
-          if (
-            warning.message.includes("is dynamically imported by") &&
-            warning.message.includes("but also statically imported by")
-          ) {
-            return;
-          }
-          warn(warning);
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: "modern-compiler",
         },
       },
     },

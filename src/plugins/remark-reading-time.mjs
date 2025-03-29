@@ -1,15 +1,18 @@
-// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import { toString } from 'mdast-util-to-string'
-import getReadingTime from 'reading-time'
+import { toString } from "mdast-util-to-string";
+
+const wordsPerMinute = 200;
+const chineseCharactersPerMinute = 300;
+const linesPerMinute = 50;
 
 export function remarkReadingTime() {
-  return (tree, { data }) => {
-    const textOnPage = toString(tree)
-    const readingTime = getReadingTime(textOnPage)
-    data.astro.frontmatter.minutes = Math.max(
-      1,
-      Math.round(readingTime.minutes),
-    )
-    data.astro.frontmatter.words = readingTime.words
-  }
+  return function (tree, { data }) {
+    const textOnPage = toString(tree);
+    const wordCount = textOnPage.split(/\s+/).filter(Boolean).length;
+    const chineseCount = textOnPage.match(/[\u4E00-\u9FA5]/g)?.length || 0;
+    const lineCount = textOnPage.split(/\r?\n/).length;
+    const readingTime = (wordCount / wordsPerMinute) + (chineseCount / chineseCharactersPerMinute) + (lineCount / linesPerMinute);
+
+    data.astro.frontmatter.totalCharCount = wordCount + chineseCount;
+    data.astro.frontmatter.readingTime = Math.ceil(readingTime);
+  };
 }

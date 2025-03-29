@@ -1,24 +1,19 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "compilerOptions": {
+  "compilerOptions": { // 或 "module": "ES6"
+    "target": "ESNext",
     "baseUrl": ".",
-    "strictNullChecks": true,
-    "allowJs": false,
-    "declaration": true,
-    "plugins": [
-      {
-        "name": "@astrojs/ts-plugin"
-      }
-    ],
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "paths": {
+      "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
-      "@assets/*": ["src/assets/*"],
-      "@constants/*": ["src/constants/*"],
-      "@utils/*": ["src/utils/*"],
-      "@i18n/*": ["src/i18n/*"],
       "@layouts/*": ["src/layouts/*"],
-      "@/*": ["src/*"]
-    }
-  },
-  "include": ["src/**/*"]
+      "@config": ["src/config.ts"],
+      "@interfaces/*": ["src/interface/*"],
+      "@utils/*": ["src/utils/*"]
+    },
+    "strict": true, // 或 "target": "ES6"
+    "esModuleInterop": true
+  }
 }
