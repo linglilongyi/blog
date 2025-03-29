@@ -3,7 +3,8 @@ title: 关于“我愿意”
 description: 在开始考虑结婚的时候，脑中就时不时会冒出对婚礼的想象。印象中的婚礼总是主持人问，「你是否愿意……」。我知道「我愿意」是「I do」的翻译，但我忍不住疑惑，为什么结婚用的是「我愿意」。
 publishDate: 2025-01-23
 createTime: 2025-01-14
-category: 侃侃而谈
+categories: 
+  - 侃侃而谈
 tags:
   - 情感
 cover: https://plus.unsplash.com/premium_photo-1670537037688-94a5428256b7?q=80&w=2080

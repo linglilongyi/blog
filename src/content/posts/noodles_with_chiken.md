@@ -3,8 +3,8 @@ title: 鸡肉拌面
 description: 这几个星期都比较忙，也因为各种原因很久都没有更新博客。昨天吃饭的时候觉得「金针蒸鸡」好好吃，可惜🥕晚上不回来吃饭。但是因为菜量比较多，我估摸了一下，少吃了一些，留了一大半的鸡肉，决定第二天做早餐。
 publishDate: 2025-03-26
 createTime: 2025-03-26
-updatedDate: 
-category: 口腹之欲
+categories: 
+  - 口腹之欲
 tags:
   - 煮
 draft: false

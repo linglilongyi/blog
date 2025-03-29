@@ -3,7 +3,8 @@ title: 想念所有人
 description: “Don't tell anybody anything, if you do, you start missing everybody.”
 publishDate: 2025-02-05
 createTime: 2025-02-05
-category: 侃侃而谈
+categories: 
+  - 侃侃而谈
 tags:
   - 生活
 draft: false

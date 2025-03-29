@@ -3,7 +3,8 @@ title: 周记01 有朋自远方来
 description: 本周（25年1.6-1.12）的点滴拾遗。
 publishDate: 2025-01-12
 createTime: 2025-01-12
-category: 周而复始
+categories: 
+  - 周而复始
 tags:
   - 周·记
 draft: true

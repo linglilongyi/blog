@@ -4,7 +4,8 @@ description: 做一人分量的菜总是困难的，我个人觉得做一小份�
 publishDate: 2025-01-25
 createTime: 2025-01-25
 updatedDate: 2025-02-04
-category: 口腹之欲
+categories: 
+  - 口腹之欲
 tags:
   - 煲
 draft: false

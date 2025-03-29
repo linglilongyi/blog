@@ -3,7 +3,8 @@ title: 第一次观赛就输了
 description: 第一次去线下观赛聚会，看超级碗，结果主队输的很惨
 publishDate: 2025-02-10
 createTime: 2025-02-10
-category: 岁月留痕
+categories: 
+  - 岁月留痕
 tags:
   - 橄榄球
 draft: false

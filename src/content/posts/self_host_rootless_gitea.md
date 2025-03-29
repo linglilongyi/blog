@@ -3,7 +3,8 @@ title: 自部署 gitea（rootless）
 description: 今天我们来自部署 gitea！
 publishDate: 2025-03-06
 createTime: 2025-03-06
-category: 一技之长
+categories: 
+  - 一技之长
 tags:
   - 运维
   - 职场

@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 import { marked } from "marked";
 
 export async function GET(context: any) {
-  const posts = await getCollection("blog");
+  const posts = await getCollection("posts");
   const sortedPosts = posts.sort((a: any, b: any) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
 
   function replacePath(content: string, siteUrl: string): string {
@@ -16,14 +16,14 @@ export async function GET(context: any) {
     });
   }
 
-  const items = await Promise.all(sortedPosts.map(async (blog: any) => {
-    const { data: { title, description, pubDate }, body, slug } = blog;
+  const items = await Promise.all(sortedPosts.map(async (posts: any) => {
+    const { data: { title, description, pubDate }, body, slug } = posts;
 
     const content = body
       ? replacePath(await marked(body), context.site)
       : "No content available.";
 
-    const postURL = new URL(`/blog/${slug}/`, context.site);
+    const postURL = new URL(`/posts/${slug}/`, context.site);
 
     return {
       title,

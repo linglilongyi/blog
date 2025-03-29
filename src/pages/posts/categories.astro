@@ -9,13 +9,13 @@ import { DATE_FORMAT } from "@config";
 import type { CollectionEntry } from "astro:content";
 
 // Get all blog posts
-const allBlogPosts = await getCollection("blog");
+const allBlogPosts = await getCollection("posts");
 
 // Filter out draft posts in production mode
 const allPosts = import.meta.env.PROD ? allBlogPosts.filter((post) => !post.data.draft) : allBlogPosts;
 
 // Extract all categories and group posts by category
-const categoryMap = new Map<string, CollectionEntry<"blog">[]>();
+const categoryMap = new Map<string, CollectionEntry<"posts">[]>();
 allPosts.forEach((post) => {
   if (post.data.categories) {
     post.data.categories.forEach((category) => {
@@ -34,7 +34,7 @@ categoryEntries.sort((a, b) => a[0].localeCompare(b[0]));
 // Sort posts in each category by date (newest first)
 categoryEntries.forEach(([_, posts]) => {
   posts.sort(
-    (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+    (a: CollectionEntry<"posts">, b: CollectionEntry<"posts">) =>
       new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime(),
   );
 });
@@ -65,7 +65,7 @@ const getCategoryColor = (index: number): string => {
         <h1 id="h1" class="text-2xl md:text-3xl font-bold">{t("label.categoryPage")}</h1>
         <div class="badge badge-primary">{totalCategories} {t("label.totalCategories")}</div>
       </div>
-      <a href="/blog" class="btn btn-outline btn-sm gap-2">
+      <a href="/posts" class="btn btn-outline btn-sm gap-2">
         <Icon name="lucide:book-open" class="w-4 h-4" />
         <span>{t("label.backToBlog")}</span>
       </a>
@@ -98,7 +98,7 @@ const getCategoryColor = (index: number): string => {
                     <ul class="post-list">
                       {posts.map((post) => (
                         <li class="post-item">
-                          <a href={`/blog/${post.slug}`} class="post-link">
+                          <a href={`/posts/${post.slug}`} class="post-link">
                             <span class="post-title">{post.data.title}</span>
                             <span class="post-date">{dayjs(post.data.publishDate).format(DATE_FORMAT)}</span>
                           </a>

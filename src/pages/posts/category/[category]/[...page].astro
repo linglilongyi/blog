@@ -10,7 +10,7 @@ import { t } from "@config";
 import { Icon } from "astro-icon/components";
 
 export async function getStaticPaths({ paginate }: { paginate: any }) {
-  const all_blog_posts = await getCollection("blog");
+  const all_blog_posts = await getCollection("posts");
 
   // Filter out draft posts in production mode
   const all_posts = import.meta.env.PROD ? all_blog_posts.filter((post) => !post.data.draft) : all_blog_posts;
@@ -20,10 +20,10 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
   all_posts.sort((a: any, b: any) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
   const postsWithStats = await Promise.all(
-    all_posts.map(async (blog: any) => {
-      const { remarkPluginFrontmatter } = await blog.render();
+    all_posts.map(async (posts: any) => {
+      const { remarkPluginFrontmatter } = await posts.render();
       return {
-        ...blog,
+        ...posts,
         remarkPluginFrontmatter: {
           readingTime: remarkPluginFrontmatter.readingTime,
           totalCharCount: remarkPluginFrontmatter.totalCharCount,
@@ -33,7 +33,7 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
   );
 
   return all_categories.flatMap((category) => {
-    const filtered_posts = postsWithStats.filter((blog) => blog.data.categories?.includes(category));
+    const filtered_posts = postsWithStats.filter((posts) => posts.data.categories?.includes(category));
     return paginate(filtered_posts, {
       params: { category },
       pageSize: 8,
@@ -80,7 +80,7 @@ const pageLinks = generatePageLinks(totalPages);
         <h1 id="h1" class="text-2xl md:text-3xl font-bold">{params.category}</h1>
         <div class="badge badge-primary">{page.total} {page.total === 1 ? t("label.post") : t("label.posts")}</div>
       </div>
-      <a href="/blog/categories" class="btn btn-outline btn-sm gap-2">
+      <a href="/posts/categories" class="btn btn-outline btn-sm gap-2">
         <Icon name="lucide:folder" class="w-4 h-4" />
         <span>{t("label.allCategories")}</span>
       </a>
@@ -90,21 +90,21 @@ const pageLinks = generatePageLinks(totalPages);
   </BaseCard>
   <CardGroup cols="1" gap="6">
     {
-      page.data.map((blog: Post) => (
+      page.data.map((posts: Post) => (
         <PostCard
-          title={blog.data.title}
-          image={blog.data.cover}
-          description={blog.data.description}
-          url={"/blog/" + blog.slug}
-          pubDate={blog.data.publishDate}
-          badge={blog.data.badge}
-          categories={blog.data.categories}
-          tags={blog.data.tags}
-          word={blog.remarkPluginFrontmatter.totalCharCount}
-          time={blog.remarkPluginFrontmatter.readingTime}
+          title={posts.data.title}
+          image={posts.data.cover}
+          description={posts.data.description}
+          url={"/posts/" + posts.slug}
+          pubDate={posts.data.publishDate}
+          badge={posts.data.badge}
+          categories={posts.data.categories}
+          tags={posts.data.tags}
+          word={posts.remarkPluginFrontmatter.totalCharCount}
+          time={posts.remarkPluginFrontmatter.readingTime}
         />
       ))
     }
   </CardGroup>
-  <Pagination page={page} totalPages={totalPages} pageLinks={pageLinks} baseUrl={`/blog/category/${params.category}`} />
+  <Pagination page={page} totalPages={totalPages} pageLinks={pageLinks} baseUrl={`/posts/category/${params.category}`} />
 </BaseLayout>

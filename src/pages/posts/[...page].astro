@@ -9,13 +9,13 @@ import { Icon } from "astro-icon/components";
 import { t } from "@config";
 
 export async function getStaticPaths({ paginate }: { paginate: any }) {
-  const allPosts = await getCollection("blog");
+  const allPosts = await getCollection("posts");
 
   // Filter out draft posts in production mode
   const posts = import.meta.env.PROD ? allPosts.filter((post) => !post.data.draft) : allPosts;
 
-  const topPosts = posts.filter((blog: any) => blog.data.badge === "Pin");
-  const otherPosts = posts.filter((blog: any) => blog.data.badge !== "Pin");
+  const topPosts = posts.filter((posts: any) => posts.data.badge === "Pin");
+  const otherPosts = posts.filter((posts: any) => posts.data.badge !== "Pin");
 
   topPosts.sort((a: any, b: any) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
   otherPosts.sort((a: any, b: any) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
@@ -23,11 +23,11 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
   const sortedPosts = [...topPosts, ...otherPosts];
 
   const postsWithStats = await Promise.all(
-    sortedPosts.map(async (blog) => {
-      const { remarkPluginFrontmatter } = await blog.render();
+    sortedPosts.map(async (posts) => {
+      const { remarkPluginFrontmatter } = await posts.render();
 
       return {
-        ...blog,
+        ...posts,
         remarkPluginFrontmatter: {
           readingTime: remarkPluginFrontmatter.readingTime,
           totalCharCount: remarkPluginFrontmatter.totalCharCount,
@@ -74,7 +74,7 @@ const pageLinks = generatePageLinks(totalPages);
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <!-- Archives Card -->
     <a
-      href="/blog/archives"
+      href="/posts/archives"
       class="card bg-base-100 shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-1"
     >
       <div class="card-body p-4">
@@ -92,7 +92,7 @@ const pageLinks = generatePageLinks(totalPages);
 
     <!-- Categories Card -->
     <a
-      href="/blog/categories"
+      href="/posts/categories"
       class="card bg-base-100 shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-1"
     >
       <div class="card-body p-4">
@@ -110,7 +110,7 @@ const pageLinks = generatePageLinks(totalPages);
 
     <!-- Tags Card -->
     <a
-      href="/blog/tags"
+      href="/posts/tags"
       class="card bg-base-100 shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-1"
     >
       <div class="card-body p-4">
@@ -128,7 +128,7 @@ const pageLinks = generatePageLinks(totalPages);
 
     <!-- Search Card -->
     <a
-      href="/blog/search"
+      href="/posts/search"
       class="card bg-base-100 shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-1"
     >
       <div class="card-body p-4">
@@ -148,21 +148,21 @@ const pageLinks = generatePageLinks(totalPages);
   <!-- Blog Post List -->
   <CardGroup cols="1" gap="6">
     {
-      page.data.map((blog: Post) => (
+      page.data.map((posts: Post) => (
         <PostCard
-          title={blog.data.title}
-          image={blog.data.cover}
-          description={blog.data.description}
-          url={"/blog/" + blog.slug}
-          pubDate={blog.data.publishDate}
-          badge={blog.data.badge}
-          categories={blog.data.categories}
-          tags={blog.data.tags}
-          word={blog.remarkPluginFrontmatter.totalCharCount}
-          time={blog.remarkPluginFrontmatter.readingTime}
+          title={posts.data.title}
+          image={posts.data.cover}
+          description={posts.data.description}
+          url={"/posts/" + posts.slug}
+          pubDate={posts.data.publishDate}
+          badge={posts.data.badge}
+          categories={posts.data.categories}
+          tags={posts.data.tags}
+          word={posts.remarkPluginFrontmatter.totalCharCount}
+          time={posts.remarkPluginFrontmatter.readingTime}
         />
       ))
     }
   </CardGroup>
-  <Pagination page={page} totalPages={totalPages} pageLinks={pageLinks} baseUrl={`/blog`} />
+  <Pagination page={page} totalPages={totalPages} pageLinks={pageLinks} baseUrl={`/posts`} />
 </BaseLayout>

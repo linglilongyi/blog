@@ -11,34 +11,34 @@ import MusicPlayer from 'astro-netease-player/MusicPlayer.astro';
 import Comments from "@/components/Comments.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
-  return posts.map((blog: { slug: any }) => ({
-    params: { slug: blog.slug },
-    props: { blog },
+  const posts = await getCollection("posts");
+  return posts.map((posts: { slug: any }) => ({
+    params: { slug: posts.slug },
+    props: { posts },
   }));
 }
 interface Props {
-  blog: CollectionEntry<"blog">;
+  posts: CollectionEntry<"posts">;
 }
 
-const { blog } = Astro.props;
-const { Content, remarkPluginFrontmatter, headings } = await blog.render();
-const displayDate = blog.data.publishDate ? dayjs(blog.data.publishDate).format(DATE_FORMAT) : "";
+const { posts } = Astro.props;
+const { Content, remarkPluginFrontmatter, headings } = await posts.render();
+const displayDate = posts.data.publishDate ? dayjs(posts.data.publishDate).format(DATE_FORMAT) : "";
 ---
 
-<BaseLayout title={blog.data.title} image={blog.data.cover} headings={headings} showTOC={true}>
-  <MainCard title={blog.data.title} description={blog.data.description} image={blog.data.cover} infoIcon="lucide:info">
+<BaseLayout title={posts.data.title} image={posts.data.cover} headings={headings} showTOC={true}>
+  <MainCard title={posts.data.title} description={posts.data.description} image={posts.data.cover} infoIcon="lucide:info">
     <!-- Article info using PostInfo component -->
     <PostInfo
       pubDate={displayDate}
-      badge={blog.data.badge}
+      badge={posts.data.badge}
       word={remarkPluginFrontmatter.totalCharCount}
       time={remarkPluginFrontmatter.readingTime}
     />
 
     <!-- Categories and tags using PostFilter component -->
     <div class="mb-6">
-      <PostFilter categories={blog.data.categories} tags={blog.data.tags} />
+      <PostFilter categories={posts.data.categories} tags={posts.data.tags} />
     </div>
 
     <!-- Article Content -->
@@ -46,12 +46,12 @@ const displayDate = blog.data.publishDate ? dayjs(blog.data.publishDate).format(
       <div id="content" class="prose max-w-none prose-headings:scroll-mt-20 prose-img:rounded-xl prose-img:mx-auto">
         <Content components={{ MusicPlayer: MusicPlayer }} />
         <License
-          title={blog.data.title}
-          image={blog.data.cover}
-          pubDate={blog.data.publishDate}
-          badge={blog.data.badge}
-          categories={blog.data.categories}
-          tags={blog.data.tags}
+          title={posts.data.title}
+          image={posts.data.cover}
+          pubDate={posts.data.publishDate}
+          badge={posts.data.badge}
+          categories={posts.data.categories}
+          tags={posts.data.tags}
           word={remarkPluginFrontmatter.totalCharCount}
           time={remarkPluginFrontmatter.readingTime}
         />

@@ -4,7 +4,8 @@ description: 我的第一次手搓systemd service，记录fnm-twikoo的配置过
 publishDate: 2025-01-07
 createTime: 2025-01-07
 updatedDate: 2025-01-12
-category: 一技之长
+categories: 
+  - 一技之长
 tags:
   - 运维
 draft: false

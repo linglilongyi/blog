@@ -3,7 +3,8 @@ title: 要一直问
 description: Ask.fm停止运营，但我们不能停止发问。
 publishDate: 2025-02-08
 createTime: 2025-02-06
-category: 侃侃而谈
+categories: 
+  - 侃侃而谈
 tags:
   - 信念
 draft: false

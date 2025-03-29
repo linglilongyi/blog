@@ -3,7 +3,8 @@ title: 如龙8
 description: description
 publishDate: 2025-03-30
 createTime: 2025-02-28
-category: 书影音游
+categories: 
+  - 书影音游
 tags:
   - 如龙
 draft: true

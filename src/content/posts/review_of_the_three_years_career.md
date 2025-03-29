@@ -3,7 +3,8 @@ title: 三年打工人回顾
 description: 正式工作已经三年了，准备换工作前，先对我的职业观做下回顾
 publishDate: 2025-02-11
 createTime: 2025-02-11
-category: 侃侃而谈
+categories: 
+  - 侃侃而谈
 tags:
   - 职场
 draft: true

@@ -9,7 +9,7 @@ import { DATE_FORMAT } from "@config";
 import type { CollectionEntry } from "astro:content";
 
 // Get all blog posts
-const allBlogPosts = await getCollection("blog");
+const allBlogPosts = await getCollection("posts");
 
 // Filter out draft posts in production mode
 const allPosts = import.meta.env.PROD ? allBlogPosts.filter((post) => !post.data.draft) : allBlogPosts;
@@ -18,7 +18,7 @@ const allPosts = import.meta.env.PROD ? allBlogPosts.filter((post) => !post.data
 allPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
 
 // Group posts by year and month
-const postsByDate = new Map<string, Map<string, CollectionEntry<"blog">[]>>();
+const postsByDate = new Map<string, Map<string, CollectionEntry<"posts">[]>>();
 
 allPosts.forEach((post) => {
   const date = new Date(post.data.publishDate);
@@ -26,7 +26,7 @@ allPosts.forEach((post) => {
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
 
   if (!postsByDate.has(year)) {
-    postsByDate.set(year, new Map<string, CollectionEntry<"blog">[]>());
+    postsByDate.set(year, new Map<string, CollectionEntry<"posts">[]>());
   }
 
   const yearMap = postsByDate.get(year)!;
@@ -71,7 +71,7 @@ const totalPosts = allPosts.length;
         <h1 id="h1" class="text-2xl md:text-3xl font-bold">{t("label.archivePage")}</h1>
         <div class="badge badge-accent">{totalPosts} {totalPosts === 1 ? t("label.post") : t("label.posts")}</div>
       </div>
-      <a href="/blog" class="btn btn-outline btn-sm gap-2">
+      <a href="/posts" class="btn btn-outline btn-sm gap-2">
         <Icon name="lucide:book-open" class="w-4 h-4" />
         <span>{t("label.backToBlog")}</span>
       </a>
@@ -106,7 +106,7 @@ const totalPosts = allPosts.length;
                         <ul class="archive-posts">
                           {posts.map((post) => (
                             <li class="archive-item">
-                              <a href={`/blog/${post.slug}`} class="archive-card">
+                              <a href={`/posts/${post.slug}`} class="archive-card">
                                 <time class="archive-date">{dayjs(post.data.publishDate).format(DATE_FORMAT)}</time>
                                 <h4 class="archive-title">{post.data.title}</h4>
                                 {post.data.description && <p class="archive-description">{post.data.description}</p>}

@@ -3,7 +3,8 @@ title: 对抗体制化
 description: “These walls are kind of funny like that． First you hate them，then you get used to them． Enough time passed，get so you depend on them． That’s institutionalizing．”
 publishDate: 2025-01-23
 createTime: 2025-01-20
-category: 书影音游
+categories: 
+  - 书影音游
 tags:
   - 影评
 draft: false
