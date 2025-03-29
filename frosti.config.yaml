@@ -21,43 +21,48 @@ site:
       href: /about
       svg: "material-symbols:info-outline-rounded"
       target: _self
-    - id: blog
-      text: Blogs
-      href: /blog
+    - id: posts
+      text: Posts
+      href: /posts
       svg: "material-symbols:book-2-outline-rounded"
       target: _self
       subItems:
         - id: all
-          text: All blogs
-          href: /blog
+          text: All posts
+          href: /posts
           svg: "material-symbols:ink-pen-outline-rounded"
           target: _self
-        - id: tech
-          text: Tech blogs
-          href: /blog/category/tech
+        - id: 周而复始
+          text: 周而复始
+          href: /posts/category/周而复始
           svg: "material-symbols:deployed-code-outline"
           target: _self
-        - id: life
-          text: Life blogs
-          href: /blog/category/life
+        - id: 书影音游
+          text: 书影音游
+          href: /posts/category/书影音游
+          svg: "material-symbols:earthquake-rounded"
+          target: _self
+        - id: 一技之长
+          text: 一技之长
+          href: /posts/category/一技之长
+          svg: "material-symbols:deployed-code-outline"
+          target: _self
+        - id: 岁月留痕
+          text: 岁月留痕
+          href: /posts/category/岁月留痕
+          svg: "material-symbols:earthquake-rounded"
+          target: _self
+        - id: 侃侃而谈
+          text: 侃侃而谈
+          href: /posts/category/侃侃而谈
           svg: "material-symbols:earthquake-rounded"
           target: _self
         # 子菜单项配置
-    - id: project
-      text: Project
-      href: /project
-      svg: "material-symbols:code-blocks-outline"
-      target: _self
     - id: friend
       text: Friend
       href: /friend
       svg: "material-symbols:supervisor-account-outline-rounded"
       target: _self
-    - id: contact
-      text: Contact
-      href: "mailto:contact.evesunmaple@outlook.com"
-      target: _blank # 在新标签页打开
-      svg: "material-symbols:attach-email-outline-rounded"
 
 # 用户的个人信息
 user:
