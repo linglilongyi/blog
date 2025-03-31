@@ -9,26 +9,26 @@ site:
     light: retro # 主题的浅色模式
     dark: coffee # 主题的深色模式
     code: catppuccin-latte # 代码块的主题 https://shiki.style/themes
-  date_format: ddd MMM DD YYYY # 日期格式设置，支持自定义格式
+  date_format: YYYY-MM-DD # 日期格式设置，支持自定义格式
   menu: # 菜单配置
     - id: home # 菜单项的唯一标识符
-      text: Home # 菜单项显示的文本
+      text: 主页 # 菜单项显示的文本
       href: / # 菜单项链接的地址
       svg: "material-symbols:home-outline-rounded"
       target: _self
     - id: about
-      text: About
+      text: 关于
       href: /about
       svg: "material-symbols:info-outline-rounded"
       target: _self
     - id: posts
-      text: Posts
+      text: 博客
       href: /posts
       svg: "material-symbols:book-2-outline-rounded"
       target: _self
       subItems:
         - id: all
-          text: All posts
+          text: 全部博客
           href: /posts
           svg: "material-symbols:ink-pen-outline-rounded"
           target: _self
@@ -59,7 +59,7 @@ site:
           target: _self
         # 子菜单项配置
     - id: friend
-      text: Friend
+      text: 友链
       href: /friend
       svg: "material-symbols:supervisor-account-outline-rounded"
       target: _self
