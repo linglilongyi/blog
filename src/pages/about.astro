@@ -2,22 +2,58 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import MainCard from "@/components/MainCard.astro";
-import GitHubStats from "@/components/mdx/GitHubStats.astro";
 ---
 
 <BaseLayout title="About">
   <MainCard
-    title="绫里龙一"
-    description="关于雨霖铃慢"
-    textOverlay="ABOUT"
+    title="雨霖铃慢"
+    description="我的故事仍等待被述说..."
+    textOverlay="关于"
+    image="/favicon.svg"
     infoIcon="lucide:user"
   >
     <div class="space-y-10 mb-8">
       <!-- Profile Section -->
       <section class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+        <div class="avatar">
+          <div
+            class="w-32 h-32 md:w-40 md:h-40 rounded-xl ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden"
+          >
+            <img src="https://github.com/linglilongyi.png" alt="龙一" width="160" height="160" loading="eager" />
+          </div>
+        </div>
+
+        <div class="flex-1 text-center md:text-left">
+          <h1 class="text-3xl md:text-4xl font-bold mb-2">龙一</h1>
+          <p class="text-xl text-base-content/80 mb-4">充满好奇心的冲浪高手🏄‍♂️</p>
+
+          <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
+            <a
+              href="https://github.com/linglilongyi"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-sm btn-outline gap-2"
+            >
+              <Icon name="lucide:github" class="w-4 h-4" />
+              <span>GitHub</span>
+            </a>
+          </div>
           <p class="text-base-content/80">
-            我的故事仍等待被述说...
+            这里是绫里龙一，通称龙一，也有一个🥕会叫我🌵。<br/>
           </p>
+        </div>
+      </section>
+
+      <!-- Tech Stack -->
+      <section>
+        <div class="bg-base-200 rounded-xl p-6 overflow-x-auto">
+          <p class="text-base-content/80">
+            博客基于 <a href=https://github.com/EveSunMaple/Frosti>Astro-Frosti<a> 构建，源码托管在 <a href=https://github.com/linglilongyi/myblog>GitHub</a>。<br/>
+            这是一个“全栈”博客，不仅有生活和技术，什么内容都有可能有。毕竟作者本人就是什么都会想会做会叭叭。<br/>
+            我们做人已经抗下那么多标签了，网络冲浪又何必给自己那么多枷锁呢。<br/>
+            所以基本上很难也基本没想过面对特定读者来写作，但也真心希望或多或少能给读者带来知识或者温暖。<br/>
+          </p>
+
         </div>
       </section>
     </div>
