@@ -22,7 +22,7 @@ updatedDate: 2025-04-23
 ## Atom in Astro
 我的博客是用Astro搭建的，Astro官方就有在维护`@astrojs/rss`的插件，可以很方便地生成RSS。而至今都没有相关插件可以生成Atom格式订阅。而 George Song 的博客刚好有[相关实现](https://gsong.dev/articles/astro-feed-unified/)，复制粘贴的同时也向原作者询问了授权。
 
-![[George授权.png]]
+![George授权.avif](https://image.linglilongyi.com/2025/04/George授权.avif)
 
 我之前用的rss已经在folo上认证了，本来想着要不直接弄个新的算了。但是翻看以前的文章，看到有四个人在看，「人是目的」。虽然软件工程里面有很多规范，但都应该是为了用户体验。命名规范是为了方便读者理解，方便开发者维护，但首先应该保证产品的可及性。虽然我的小破博客还称不上产品。
 
@@ -236,7 +236,7 @@ async function addArticlesToFeed(
 
 我修改了其中的个人信息，并增加了筛选非草稿且仅收录最新的十篇 post 的功能。里面还有一些功能其实我用不太上，但既然只在编译的时候用到，也不影响网页性能，就放着不管了。
 
-还有一点是，之前我的订阅中文章 id 的格式是 `https://linglilongyi.com/posts/${slug}`，而 George 的实现中则直接用文件的 id 即带有文件后缀的路径作为路由。为了统一实现，我也重命名了 url。
+还有一点是，之前我的订阅中文章 id 的格式是 `https://www.linglilongyi.com/posts/${slug}`，而 George 的实现中则直接用文件的 id 即带有文件后缀的路径作为路由。为了统一实现，我也重命名了 url。
 
 更新: folo 抓取 favicon 并不能通过 website/favicon.ico 或者 feed 中的 icon 标签，需要添加 image 标签。
 ## 结语
