@@ -34,7 +34,8 @@ function createFeedInstance(site: string, author: SiteAuthor): Feed {
     id: site,
     link: site,
     language: SITE_LANGUAGE,
-    favicon: createUrl("/favicon.ico", site) as string,
+    image: createUrl("/favicon.png", 'https://linglilongyi.com') as string,
+    favicon: createUrl("/favicon.ico", 'https://linglilongyi.com') as string,
     copyright: `Copyright ${new Date().getFullYear()} 绫里龙一`,
     feedLinks: {
       atom: createUrl("/rss.xml", site) as string,
