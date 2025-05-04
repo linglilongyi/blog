@@ -9,7 +9,7 @@ tags:
   - 西安
   - 乌鲁木齐
 cover: https://image.linglilongyi.com/2025/05/路灯.webp
-draft: true
+draft: false
 hidden: false
 ---
 🥕的师姐在5.1结婚，邀请我们去新疆赴宴。我们最近都打算辞职，正不知道婚假要用来干嘛呢， 于是我们就请上三天连着五一去新疆好好玩玩。最终定下来行程是4月28日出发前往西安，第二天转新疆，然后5月2日返程。
