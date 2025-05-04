@@ -1,20 +1,21 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { Icon } from "astro-icon/components";
-import MainCard from "@/components/MainCard.astro";
+import MiniPostCard from "@/components/MiniPostCard.astro";
+import CardGroup from "@components/temple/CardGroup.astro";
+import BaseCard from "@/components/BaseCard.astro";
+
+import { getCollection } from "astro:content";
+const all_blog_posts = await getCollection("posts");
+all_blog_posts.sort((a: any, b: any) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const all_posts = import.meta.env.PROD ? all_blog_posts.filter((post) => !post.data.draft) : all_blog_posts;
+const recent_posts = all_posts.slice(0, 4);
 ---
 
 <BaseLayout title="Home">
-  <MainCard
-    title="过得到人过得到自己"
-    description="过得到人过得到自己"
-    textOverlay="雨霖铃慢"
-    image="/banner.jpg"
-    infoIcon="lucide:info"
-  >
-    <div class="space-y-8">
-      <!-- Hero Section -->
+    <div class="space-y-2">
+      <!-- website info Section -->
       <section class="py-6">
+        <BaseCard>
         <div class="flex flex-col items-center text-center">
           <h1 class="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text">
             🌵 欢迎光临
@@ -22,13 +23,29 @@ import MainCard from "@/components/MainCard.astro";
           <p class="text-xl text-base-content/80 max-w-3xl mb-8">
             随机掉落各种碎碎念的博客，三大愿望是地球爆炸、人类毁灭和世界和平。
           </p>
-          <div class="flex flex-wrap gap-4 justify-center">
-            <a href="/posts" class="btn btn-primary gap-2 btn-shine-effect">
-              <Icon name="lucide:book-open" class="w-5 h-5" />
-              <span>博客</span>
-            </a>
-          </div>
         </div>
+        </BaseCard>
+      </section>
+      <!-- recent posts Section -->
+      <section class="py-6">
+        <BaseCard>
+          <div class="flex flex-col md:flex-row gap-4">
+            <h1 class="text-2xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text"> 最近博文 </h1>
+          </div>
+          <CardGroup cols="2" gap="2">
+            {
+              recent_posts.map(posts => (
+              <MiniPostCard
+              title={posts.data.title}
+              description={posts.data.description}
+              url={"/posts/" + posts.slug}
+              categories={posts.data.categories}
+              tags={posts.data.tags}
+              />
+              ))
+            }
+          </CardGroup>
+        </BaseCard>
       </section>
     </div>
   </MainCard>

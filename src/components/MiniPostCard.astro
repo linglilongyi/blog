@@ -1,0 +1,29 @@
+---
+import type { PostData } from "@interfaces/data";
+import Heading from "./widgets/Heading.astro";
+import PostInfo from "./widgets/PostInfo.astro";
+import PostFilter from "./widgets/PostFilter.astro";
+import Card from "./temple/Card.astro";
+import { Icon } from "astro-icon/components";
+
+const {
+  title,
+  description,
+  categories = [],
+  tags = [],
+  url = decodeURIComponent(Astro.url.toString()),
+} = Astro.props as PostData;
+---
+
+<Card class="overflow-hidden">
+  <div class="flex flex-col lg:flex-row">
+    <!-- Content Section -->
+    <div class="flex-1 p-6 overflow-hidden bg-base-100 lg:order-1 order-2 flex flex-col justify-between">
+      <div>
+        <Heading url={url} title={title}>{title}</Heading>
+        <p class="text-sm text-base-content/70 mb-4">{description}</p>
+      </div>
+      <PostFilter categories={categories} tags={tags} />
+    </div>
+  </div>
+</Card>
