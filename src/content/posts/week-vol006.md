@@ -14,7 +14,7 @@ hidden: false
 - 去旅游了
 - 照顾生病的🥕
 ## 博客
-- 更新一篇[游记](/posts/travel_to_the_wester_north)。
+- 更新一篇[游记](/posts/travel_to_the_western_north)。
 - 更新了[主页](/)，去掉了头图，并增加最近博文板块。
 
 ***
