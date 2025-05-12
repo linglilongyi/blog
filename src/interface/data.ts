@@ -167,3 +167,22 @@ export interface FriendCardProps {
   url: string;
   type?: string;
 }
+
+// ===== gallery =====
+export interface GalleryItem {
+  id: string;
+  collection: "albums";
+  data: {
+    title: string;
+    description?: string;
+    cover: {
+      src: string;
+      width: number;
+      height: number;
+      format: "svg" | "avif" | "png" | "webp" | "jpeg" | "jpg" | "tiff" | "gif";
+    };
+  };
+  body?: string;
+  rendered?: unknown;
+  filePath?: string;
+}

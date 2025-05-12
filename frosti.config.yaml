@@ -58,6 +58,11 @@ site:
           svg: "material-symbols:earthquake-rounded"
           target: _self
         # 子菜单项配置
+    - id: gallery
+      text: 相册
+      href: /gallery
+      svg: "material-symbols:photo-library-outline-rounded"
+      target: _self
     - id: friend
       text: 友链
       href: /friend

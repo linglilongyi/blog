@@ -1,0 +1,61 @@
+---
+import { getAlbumImages } from "../../utils/albums";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseLayout from  "@/layouts/BaseLayout.astro";
+import Card from "@/components/temple/Card.astro";
+import AlbumCard from "@/components/AlbumCard.astro";
+import type { GalleryItem } from "@interfaces/data";
+export async function getStaticPaths() {
+  const albums = await getCollection("albums") as GalleryItem[];
+
+  const paths = Object.values(albums).map((album) => {
+    return {
+      params: {
+        id: album.id,
+      },
+      props: {
+        album,
+      },
+    };
+  });
+
+  return paths;
+}
+const { album } = Astro.props
+const images = await getAlbumImages(album.id);
+---
+
+<BaseLayout title={album.data.title}>
+    <div class="text-center">
+      <Card>
+        <h1 class="text-5xl font-bold">
+          {album.data.title}
+        </h1>
+        <p class="text-xl my-4">
+          {album.data.description}
+        </p>
+      </Card>
+      <AlbumCard>
+        <slot>
+          {
+            images.map((image) => (
+              <Image
+                src={image}
+                alt={`Image from ${album.data.title} album`}
+                format="avif"
+                quality={50}
+                class="rounded mb-4 border border-transparent hover:border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg"
+                loading="lazy"
+                data-album-image
+              />
+            ))
+          }
+        </slot>
+      </AlbumCard>
+  
+      <p class="text-lg my-4 text-center">
+        <a href="/gallery/" class="hover:underline">其他相册 →</a>
+      </p>
+    </div>
+  </BaseLayout>

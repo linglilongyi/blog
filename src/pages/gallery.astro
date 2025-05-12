@@ -1,0 +1,47 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Card from "@/components/temple/Card.astro";
+import MainCard from "@/components/MainCard.astro";
+import type { GalleryItem } from "@interfaces/data";
+const albums = await getCollection("albums") as GalleryItem[];
+
+---
+<BaseLayout title="相册">
+  <MainCard
+    title="相册"
+    description="色彩、线条和光影"
+    textOverlay="gallery"
+    infoIcon="lucide:images"
+  >
+  <Card>
+        <div class="mx-auto container max-w-(--breakpoint-sm) grid grid-cols-2 gap-8">
+      {
+        albums.map((item) => (
+          <a
+            href={`/gallery/${item.id}`}
+            class="group transition-all mb-4 block"
+          >
+            <Image
+              src={item.data.cover}
+              alt={item.data.title}
+              format="avif"
+              width={400}
+              height={400}
+              quality={70}
+              class={[
+                "rounded-lg transition-all",
+                "group-hover:shadow-lg group-hover:opacity-90"
+              ].join(" ")}
+            />
+            <div class="mt-4 text-center text-neutral-700">
+              <strong class="font-normal">{item.data.title}</strong>
+              <p class="text-xs">{item.data.description}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </Card>
+</BaseLayout>
