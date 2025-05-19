@@ -40,6 +40,7 @@ const images = await getAlbumImages(album.id);
         <slot>
           {
             images.map((image) => (
+              image.format!='gif'?
               <Image
                 src={image}
                 alt={`Image from ${album.data.title} album`}
@@ -47,6 +48,11 @@ const images = await getAlbumImages(album.id);
                 quality={50}
                 class="rounded mb-4 border border-transparent hover:border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg"
                 loading="lazy"
+                data-album-image
+              />:
+              <img
+                src={image.src}
+                alt={`Image from ${album.data.title} album`}
                 data-album-image
               />
             ))
