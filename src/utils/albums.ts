@@ -1,7 +1,7 @@
 export async function getAlbumImages(albumId: string) {
     // 1. List all album files from collections path
     let images = import.meta.glob<{ default: ImageMetadata }>(
-      "/src/content/albums/**/*.{jpeg,jpg,png,gif}"
+      "/src/content/albums/**/*.{jpeg,jpg,png,gif,avif,webp}"
     );
   
     // 2. Filter images by albumId
