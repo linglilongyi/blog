@@ -63,6 +63,11 @@ site:
       href: /gallery
       svg: "material-symbols:photo-library-outline-rounded"
       target: _self
+    - id: station
+      text: 驿站
+      href: https://station.linglilongyi.com
+      svg: "material-symbols:cabin-rounded"
+      target: _self
     - id: friend
       text: 友链
       href: /friend
